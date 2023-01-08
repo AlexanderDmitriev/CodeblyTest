@@ -10,7 +10,7 @@ export const dataBookApi = createApi({
     }),
     tagTypes: ['Data'],
     endpoints: builder => ({
-      getAllData: builder.query<string, void>({
+      getAllData: builder.query<Promise<string|Object[]>, void>({
         query: () => ({
           url: `/`,
           method: 'GET'
