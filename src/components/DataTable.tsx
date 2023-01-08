@@ -14,6 +14,7 @@ import FirstPageIcon from '@mui/icons-material/FirstPage';
 import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import LastPageIcon from '@mui/icons-material/LastPage';
+import { IData } from "types/IData";
 
 interface TablePaginationActionsProps {
   count: number;
@@ -81,13 +82,10 @@ function TablePaginationActions(props: TablePaginationActionsProps) {
   );
 }
 
-function createData(id: number, name: string, year: number, color:string) {
-  return { id,name, year, color };
-}
-
-export  function DataTable({rows:string[]}) {
+export  function DataTable({data:rows}:IData) {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
+
 
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
@@ -114,15 +112,15 @@ export  function DataTable({rows:string[]}) {
             ? rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
             : rows
           ).map((row) => (
-            <TableRow key={row.id}>
+            <TableRow key={row.data.data.id}>
               <TableCell component="th" scope="row">
-                {row.id}
+                {row.data.data.id}
               </TableCell>
               <TableCell style={{ width: 160 }} align="right">
-                {row.name}
+                {row.data.data.name}
               </TableCell>
               <TableCell style={{ width: 160 }} align="right">
-                {row.year}
+                {row.data.data.year}
               </TableCell>
             </TableRow>
           ))}

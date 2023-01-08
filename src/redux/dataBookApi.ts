@@ -1,4 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { IData } from "types/IData";
 
 export const dataBookApi = createApi({
     reducerPath: 'dataBook',
@@ -10,7 +11,7 @@ export const dataBookApi = createApi({
     }),
     tagTypes: ['Data'],
     endpoints: builder => ({
-      getAllData: builder.query<Promise<string|Object[]>, void>({
+      getAllData: builder.query<Promise<IData>, void>({
         query: () => ({
           url: `/`,
           method: 'GET'
