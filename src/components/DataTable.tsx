@@ -82,7 +82,7 @@ function TablePaginationActions(props: TablePaginationActionsProps) {
   );
 }
 
-export  function DataTable({data:rows}:IData) {
+export  const  DataTable: React.FC<IData> =({data:rows}:IData) =>{
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
@@ -112,15 +112,15 @@ export  function DataTable({data:rows}:IData) {
             ? rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
             : rows
           ).map((row) => (
-            <TableRow key={row.data.data.id}>
+            <TableRow key={row.data.id}>
               <TableCell component="th" scope="row">
-                {row.data.data.id}
+                {row.data.id}
               </TableCell>
               <TableCell style={{ width: 160 }} align="right">
-                {row.data.data.name}
+                {row.data.name}
               </TableCell>
               <TableCell style={{ width: 160 }} align="right">
-                {row.data.data.year}
+                {row.data.year}
               </TableCell>
             </TableRow>
           ))}
