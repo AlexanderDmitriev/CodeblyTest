@@ -5,14 +5,13 @@ import BasicModal from 'components/Modal';
 import { dataBookApi } from 'redux/dataBookApi';
 
 export const App = () => {
-  const info = dataBookApi.useGetAllDataQuery()?.data?.data;
-  /* const {data:res} = dataBookApi.useGetAllDataQuery(); */
-  console.log(info);
+  const {data:info, isSuccess} = dataBookApi.useGetAllDataQuery();
+console.log(dataBookApi.useGetAllDataQuery().data)
 
   return (
     <DataContainer>
       <FilterField />
-      {info&&<DataTable data={info}/>}
+      {isSuccess&&<DataTable data={info.data}/>}
       <BasicModal />
     </DataContainer>
   );

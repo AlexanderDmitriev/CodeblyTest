@@ -86,7 +86,6 @@ export  const  DataTable: React.FC<IData> =({data:rows}:IData) =>{
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
-
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
 
@@ -104,11 +103,13 @@ export  const  DataTable: React.FC<IData> =({data:rows}:IData) =>{
     setPage(0);
   };
 
+  console.log(rows);
+
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 500 }} aria-label="custom pagination table">
         <TableBody>
-          {(rowsPerPage > 0
+            {(rowsPerPage > 0
             ? rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
             : rows
           ).map((row) => (

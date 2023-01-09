@@ -11,7 +11,7 @@ export const dataBookApi = createApi({
     }),
     tagTypes: ['Data'],
     endpoints: builder => ({
-      getAllData: builder.query<Promise<IData>, void>({
+      getAllData: builder.query<IData, void>({
         query: () => ({
           url: `/`,
           method: 'GET'

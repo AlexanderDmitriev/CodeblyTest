@@ -1,7 +1,7 @@
 export type DataAPI = {
-  data:{ id: number; name: string; year: number; color: string };
+  data:{ id: number, name: string, year: number, color: string };
 };
 
 export interface IData {
-  data: {data:{id:number, name:string, year:number, color:string}};
+  data: DataAPI[];
 }
