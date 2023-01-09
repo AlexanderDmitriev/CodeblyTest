@@ -14,7 +14,7 @@ import FirstPageIcon from '@mui/icons-material/FirstPage';
 import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import LastPageIcon from '@mui/icons-material/LastPage';
-import { IData } from "types/IData";
+import { IData,DataAPI } from "types/IData";
 
 interface TablePaginationActionsProps {
   count: number;
@@ -82,6 +82,8 @@ function TablePaginationActions(props: TablePaginationActionsProps) {
   );
 }
 
+
+
 export  const  DataTable: React.FC<IData> =({data:rows}:IData) =>{
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
@@ -107,21 +109,21 @@ export  const  DataTable: React.FC<IData> =({data:rows}:IData) =>{
 
   return (
     <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 500 }} aria-label="custom pagination table">
+      {rows&&(<Table sx={{ minWidth: 500 }} aria-label="custom pagination table">
         <TableBody>
             {(rowsPerPage > 0
             ? rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
             : rows
           ).map((row) => (
-            <TableRow key={row.data.id}>
+            <TableRow key={row.id}>
               <TableCell component="th" scope="row">
-                {row.data.id}
+                {row.id}
               </TableCell>
               <TableCell style={{ width: 160 }} align="right">
-                {row.data.name}
+                {row.name}
               </TableCell>
               <TableCell style={{ width: 160 }} align="right">
-                {row.data.year}
+                {row.year}
               </TableCell>
             </TableRow>
           ))}
@@ -151,7 +153,8 @@ export  const  DataTable: React.FC<IData> =({data:rows}:IData) =>{
             />
           </TableRow>
         </TableFooter>
-      </Table>
+      </Table>)}
+      
     </TableContainer>
   );
 }
