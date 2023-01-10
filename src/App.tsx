@@ -1,17 +1,16 @@
-import { FilterField } from 'components/FilterField';
-import { DataTable } from 'components/DataTable';
-import { DataContainer } from 'components/Container';
-import BasicModal from 'components/Modal';
-import { dataBookApi } from 'redux/dataBookApi';
+import { Route, Routes } from 'react-router-dom';
+import { lazy, Suspense } from 'react';
+
+const MainPage = lazy(() => import('./pages/MainPage'));
+const NotFoundPage = lazy(() => import('./pages/NotFoundPage'));
 
 export const App = () => {
-  const {data:info, isSuccess} = dataBookApi.useGetAllDataQuery();
-
   return (
-    <DataContainer>
-      <FilterField />
-      {isSuccess&&<DataTable data={info.data} />}
-      <BasicModal />
-    </DataContainer>
+    <Suspense fallback={<div>Loading...</div>}>
+      <Routes>
+        <Route path="/" element={<MainPage />} />
+        <Route path="*" element={<NotFoundPage />} />
+      </Routes>
+    </Suspense>
   );
 };

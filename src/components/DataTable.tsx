@@ -115,7 +115,7 @@ export  const  DataTable: React.FC<IData> =({data:rows}:IData) =>{
             ? rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
             : rows
           ).map((row) => (
-            <TableRow key={row.id}>
+            <TableRow key={row.id} sx={{ bgcolor: `${row.color}` }}>
               <TableCell component="th" scope="row">
                 {row.id}
               </TableCell>
