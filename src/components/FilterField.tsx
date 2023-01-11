@@ -1,7 +1,8 @@
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 
-export const FilterField =() => {
+export const FilterField =({changeFilter}:any) => {
+
   return (
     <Box
       component="form"
@@ -12,7 +13,7 @@ export const FilterField =() => {
       autoComplete="off"
     >
       <div>
-      <TextField id="outlined-search" label="Search field" type="search" />
+      <TextField id="filter" label="Search field" type="search" onChange={changeFilter}/>
       </div>
     </Box>
   );

@@ -82,8 +82,6 @@ function TablePaginationActions(props: TablePaginationActionsProps) {
   );
 }
 
-
-
 export  const  DataTable: React.FC<IData> =({data:rows}:IData) =>{
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
@@ -104,8 +102,6 @@ export  const  DataTable: React.FC<IData> =({data:rows}:IData) =>{
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
-
-  console.log(rows);
 
   return (
     <TableContainer component={Paper}>
