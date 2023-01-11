@@ -1,7 +1,6 @@
 import { FilterField } from 'components/FilterField';
 import { DataTable } from 'components/DataTable';
 import { DataContainer } from 'components/Container';
-import BasicModal from 'components/Modal';
 import { dataBookApi } from 'redux/dataBookApi';
 import { useDispatch, useSelector } from 'react-redux';
 import { filterInfo } from '../redux/filter';
@@ -29,13 +28,10 @@ export default function MainPage() {
     }
   }, [filterData, info, normalizedFilter]);
 
-  console.log(visibleData);
-
   return (
     <DataContainer>
       <FilterField changeFilter={changeFilter} />
-      {isSuccess && <DataTable data={visibleData} />}
-      <BasicModal />
+      {isSuccess && <DataTable data={visibleData} isSuccess={isSuccess} />}
     </DataContainer>
   );
 }

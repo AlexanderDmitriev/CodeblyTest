@@ -3,6 +3,9 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
+import { DataAPI } from 'types/IData';
+import { nanoid } from 'nanoid';
+import { dataBookApi } from 'redux/dataBookApi';
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -16,15 +19,24 @@ const style = {
   p: 4,
 };
 
-export default function BasicModal() {
+export default function BasicModal({ data }: any) {
   const [open, setOpen] = React.useState(false);
+  const { isSuccess } = dataBookApi.useGetAllDataQuery();
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  const itemInfo: string[] = [];
+  if (data) {
+    const keys = Object.keys(data);
+    const values = Object.values(data);
+    for (let i = 0; i <= keys.length - 1; i += 1) {
+      itemInfo.push(`${keys[i]} - ${values[i]}`);
+    }
+  }
 
   return (
     <div>
       <Button onClick={handleOpen}>Open modal</Button>
-      <Modal
+      {data&&(<Modal
         open={open}
         onClose={handleClose}
         aria-labelledby="modal-modal-title"
@@ -32,13 +44,19 @@ export default function BasicModal() {
       >
         <Box sx={style}>
           <Typography id="modal-modal-title" variant="h6" component="h2">
-            Text in a modal
+            {data.name}
           </Typography>
-          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-            Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
-          </Typography>
+          {itemInfo.map(param => (
+            <Typography
+              id="modal-modal-description"
+              key={nanoid()}
+              sx={{ mt: 2 }}
+            >
+              {param}
+            </Typography>
+          ))}
         </Box>
-      </Modal>
+      </Modal>)}
     </div>
   );
 }
