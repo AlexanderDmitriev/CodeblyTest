@@ -1,6 +1,4 @@
-import * as React from 'react';
 import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import { nanoid } from 'nanoid';
@@ -17,9 +15,7 @@ const style = {
   p: 4,
 };
 
-export default function BasicModal({ data }: any) {
-  const [open, setOpen] = React.useState(false);
-  const handleOpen = () => setOpen(true);
+export default function BasicModal({ data,open, setOpen }: any) {
   const handleClose = () => setOpen(false);
   const itemInfo: string[] = [];
   if (data) {
@@ -32,7 +28,6 @@ export default function BasicModal({ data }: any) {
 
   return (
     <div>
-      <Button onClick={handleOpen}>Open modal</Button>
       {data&&(<Modal
         open={open}
         onClose={handleClose}

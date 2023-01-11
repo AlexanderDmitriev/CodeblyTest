@@ -9,6 +9,8 @@ import { useState, useEffect } from 'react';
 export default function MainPage() {
   const { data: info, isSuccess } = dataBookApi.useGetAllDataQuery();
   const [visibleData, setVisibleData] = useState([]);
+  const [open, setOpen] = useState(false);
+  let [currentItem, setCurrentItem] = useState(null);
 
   const dispatch = useDispatch();
   const filterData = useSelector(state => state.filter.value);
@@ -17,6 +19,13 @@ export default function MainPage() {
   };
 
   const normalizedFilter = Number(filterData);
+  const handlerModal = (event) => {
+    const currentId = event.currentTarget.firstChild?.textContent;
+    if (visibleData) {
+      setCurrentItem(visibleData.find(item=> item.id===Number(currentId)))
+    }
+    setOpen(!open);
+  };
 
   useEffect(() => {
     if (info) {
@@ -31,7 +40,7 @@ export default function MainPage() {
   return (
     <DataContainer>
       <FilterField changeFilter={changeFilter} />
-      {isSuccess && <DataTable data={visibleData} isSuccess={isSuccess} />}
+      {isSuccess && <DataTable data={visibleData} currentItem={currentItem} open={open} setOpen={setOpen} handlerModal={handlerModal}/>}
     </DataContainer>
   );
 }

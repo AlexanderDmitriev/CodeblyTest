@@ -7,14 +7,18 @@ import TableFooter from '@mui/material/TableFooter';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import { IData } from 'types/IData';
+import { IData, DataAPI } from 'types/IData';
 import { TablePaginationActions } from './TablePaginationActions';
 import BasicModal from 'components/Modal';
 
-export const DataTable: React.FC<IData> = ({ data: rows }: IData) => {
+export const DataTable = (props:any) => {
+  const {data:rows}:IData = props
+  const {open, setOpen,handlerModal}:any = props;
+  let currentItem:DataAPI=props.currentItem;
+
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
-
+  
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
 
@@ -32,6 +36,15 @@ export const DataTable: React.FC<IData> = ({ data: rows }: IData) => {
     setPage(0);
   };
 
+/*   const handlerModal = (event: React.SyntheticEvent): void => {
+    const currentId = event.currentTarget.firstChild?.textContent;
+    if (rows) {
+      currentItem = rows[Number(currentId)];
+      console.log(currentItem);
+    }
+    setOpen(!open);
+  }; */
+
   return (
     <>
       <TableContainer component={Paper}>
@@ -45,7 +58,11 @@ export const DataTable: React.FC<IData> = ({ data: rows }: IData) => {
                   )
                 : rows
               ).map(row => (
-                <TableRow key={row.id} sx={{ bgcolor: `${row.color}` }}>
+                <TableRow
+                  key={row.id}
+                  sx={{ bgcolor: `${row.color}` }}
+                  onClick={handlerModal}
+                >
                   <TableCell component="th" scope="row">
                     {row.id}
                   </TableCell>
@@ -86,7 +103,7 @@ export const DataTable: React.FC<IData> = ({ data: rows }: IData) => {
           </Table>
         )}
       </TableContainer>
-      <BasicModal data={rows[1]} />
+      <BasicModal data={currentItem} open={open} setOpen={setOpen} />
     </>
   );
 };
