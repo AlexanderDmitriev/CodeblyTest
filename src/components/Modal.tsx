@@ -3,9 +3,7 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
-import { DataAPI } from 'types/IData';
 import { nanoid } from 'nanoid';
-import { dataBookApi } from 'redux/dataBookApi';
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -21,7 +19,6 @@ const style = {
 
 export default function BasicModal({ data }: any) {
   const [open, setOpen] = React.useState(false);
-  const { isSuccess } = dataBookApi.useGetAllDataQuery();
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const itemInfo: string[] = [];
