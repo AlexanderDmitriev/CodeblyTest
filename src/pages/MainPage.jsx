@@ -5,30 +5,37 @@ import BasicModal from 'components/Modal';
 import { dataBookApi } from 'redux/dataBookApi';
 import { useDispatch, useSelector } from 'react-redux';
 import { filterInfo } from '../redux/filter';
+import { useState, useEffect } from 'react';
 
-export default function MainPage () {
+export default function MainPage() {
   const { data: info, isSuccess } = dataBookApi.useGetAllDataQuery();
+  const [visibleData, setVisibleData] = useState([]);
 
   const dispatch = useDispatch();
   const filterData = useSelector(state => state.filter.value);
   const changeFilter = event => {
     dispatch(filterInfo(event.currentTarget.value));
-    
   };
-  let visibleData = [];
+
   const normalizedFilter = Number(filterData);
-  if (info) {
-    visibleData = info.data.filter(data =>
-      data.id === normalizedFilter
-    );
-  }
+
+  useEffect(() => {
+    if (info) {
+      if (filterData === '') {
+        setVisibleData(info.data);
+      } else {
+        setVisibleData(info.data.filter(data => data.id === normalizedFilter));
+      }
+    }
+  }, [filterData, info, normalizedFilter]);
+
   console.log(visibleData);
 
   return (
     <DataContainer>
-      <FilterField changeFilter={changeFilter}/>
-      {isSuccess && <DataTable data={info.data} />}
+      <FilterField changeFilter={changeFilter} />
+      {isSuccess && <DataTable data={visibleData} />}
       <BasicModal />
     </DataContainer>
   );
-};
+}
