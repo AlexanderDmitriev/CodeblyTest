@@ -7,7 +7,7 @@ import { filterInfo } from '../redux/filter';
 import { useState, useEffect } from 'react';
 import { ErrorFallback } from 'components/ErrorFallback';
 import { ErrorBoundary } from 'react-error-boundary';
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams } from 'react-router-dom';
 
 export default function MainPage() {
   const { data: info, isSuccess } = dataBookApi.useGetAllDataQuery();
@@ -15,25 +15,45 @@ export default function MainPage() {
   const [open, setOpen] = useState(false);
   let [currentItem, setCurrentItem] = useState(null);
   const [searchParams, setSearchParams] = useSearchParams();
-  const [rowsPerPage, setRowsPerPage] = useState(parseInt(searchParams.get("per_page")) ?? 5);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
   const dispatch = useDispatch();
-  const filterData =  useSelector(state => state.filter.value);
-  const [page, setPage] = useState(parseInt(searchParams.get("page"))-1 ?? 0);
-  
+  const filterData = useSelector(state => state.filter.value);
+  const [page, setPage] = useState(0);
 
-  const updateQueryString = (per_page,page,filter) => {
-    const nextPerPageParams = per_page !== "" ? { per_page } : {};
-    const nextPageParams = page !== "" ? { page } : {};
-    const nextFilterParams=filter !== "" ? { filter } : {};
-    const nextParams = {...nextPerPageParams, ...nextPageParams,...nextFilterParams};
+  const updateQueryString = (per_page, page, filter) => {
+    const nextPerPageParams = per_page !== '' ? { per_page } : {};
+    const nextPageParams = page !== '' ? { page } : {};
+    const nextFilterParams = filter !== '' ? { filter } : {};
+    const nextParams = {
+      ...nextPerPageParams,
+      ...nextPageParams,
+      ...nextFilterParams,
+    };
     setSearchParams(nextParams);
   };
+
+  useEffect(() => {
+    if (searchParams.get('page' !== '')) {
+      setPage(parseInt(searchParams.get('page')) - 1);
+    }
+    if (searchParams.get('per_page' !== '')) {
+      setRowsPerPage(parseInt(searchParams.get('per_page')));
+    }
+    /* if (searchParams.get('filter' !== '')) {
+      setFilterData(searchParams.get('filter'));
+    } */
+  }, [searchParams]);
+
+  useEffect(()=>{
+    updateQueryString(rowsPerPage, page + 1, filterData)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  },[rowsPerPage, page, filterData, setSearchParams]);
 
   const changeFilter = event => {
     dispatch(filterInfo(event.currentTarget.value));
   };
 
-  const normalizedFilter = searchParams.get("filter") ?? Number(filterData);
+  const normalizedFilter = searchParams.get('filter') ?? Number(filterData);
   const handlerModal = event => {
     const currentId = event.currentTarget.firstChild?.textContent;
     if (visibleData) {
@@ -66,18 +86,16 @@ export default function MainPage() {
             rowsPerPage={rowsPerPage}
             page={page}
             setPage={setPage}
-            filterData={filterData}
             handlerModal={handlerModal}
-            updateQueryString={updateQueryString}
           />
         )}
       </ErrorBoundary>
-      <button
+{/*       <button
         type="button"
         onClick={() => updateQueryString(rowsPerPage, page + 1, filterData)}
       >
         Click
-      </button>
+      </button> */}
     </DataContainer>
   );
 }
