@@ -11,14 +11,21 @@ import { IData, DataAPI } from 'types/IData';
 import { TablePaginationActions } from './TablePaginationActions';
 import BasicModal from 'components/Modal';
 
-export const DataTable = (props:any) => {
-  const {data:rows}:IData = props
-  const {open, setOpen,handlerModal}:any = props;
-  let currentItem:DataAPI=props.currentItem;
+export const DataTable = (props: any) => {
+  const { data: rows }: IData = props;
+  const {
+    open,
+    setOpen,
+    handlerModal,
+    rowsPerPage,
+    setRowsPerPage,
+    page,
+    setPage,
+    updateQueryString,
+    filterData,
+  }: any = props;
+  let currentItem: DataAPI = props.currentItem;
 
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
-  
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
 
@@ -35,15 +42,6 @@ export const DataTable = (props:any) => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
-
-/*   const handlerModal = (event: React.SyntheticEvent): void => {
-    const currentId = event.currentTarget.firstChild?.textContent;
-    if (rows) {
-      currentItem = rows[Number(currentId)];
-      console.log(currentItem);
-    }
-    setOpen(!open);
-  }; */
 
   return (
     <>
@@ -103,6 +101,12 @@ export const DataTable = (props:any) => {
           </Table>
         )}
       </TableContainer>
+      <button
+        type="button"
+        onClick={() => updateQueryString(rowsPerPage, page + 1, filterData)}
+      >
+        Click
+      </button>
       <BasicModal data={currentItem} open={open} setOpen={setOpen} />
     </>
   );
