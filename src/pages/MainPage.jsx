@@ -5,6 +5,8 @@ import { dataBookApi } from 'redux/dataBookApi';
 import { useDispatch, useSelector } from 'react-redux';
 import { filterInfo } from '../redux/filter';
 import { useState, useEffect } from 'react';
+import { ErrorFallback } from 'components/ErrorFallback';
+import { ErrorBoundary } from 'react-error-boundary';
 
 export default function MainPage() {
   const { data: info, isSuccess } = dataBookApi.useGetAllDataQuery();
@@ -19,10 +21,10 @@ export default function MainPage() {
   };
 
   const normalizedFilter = Number(filterData);
-  const handlerModal = (event) => {
+  const handlerModal = event => {
     const currentId = event.currentTarget.firstChild?.textContent;
     if (visibleData) {
-      setCurrentItem(visibleData.find(item=> item.id===Number(currentId)))
+      setCurrentItem(visibleData.find(item => item.id === Number(currentId)));
     }
     setOpen(!open);
   };
@@ -40,7 +42,17 @@ export default function MainPage() {
   return (
     <DataContainer>
       <FilterField changeFilter={changeFilter} />
-      {isSuccess && <DataTable data={visibleData} currentItem={currentItem} open={open} setOpen={setOpen} handlerModal={handlerModal}/>}
+      <ErrorBoundary FallbackComponent={ErrorFallback}>
+        {isSuccess && (
+          <DataTable
+            data={visibleData}
+            currentItem={currentItem}
+            open={open}
+            setOpen={setOpen}
+            handlerModal={handlerModal}
+          />
+        )}
+      </ErrorBoundary>
     </DataContainer>
   );
 }
