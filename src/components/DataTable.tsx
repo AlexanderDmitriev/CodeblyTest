@@ -21,8 +21,6 @@ export const DataTable = (props: any) => {
     setRowsPerPage,
     page,
     setPage,
-    updateQueryString,
-    filterData,
   }: any = props;
   let currentItem: DataAPI = props.currentItem;
 
@@ -101,12 +99,6 @@ export const DataTable = (props: any) => {
           </Table>
         )}
       </TableContainer>
-      <button
-        type="button"
-        onClick={() => updateQueryString(rowsPerPage, page + 1, filterData)}
-      >
-        Click
-      </button>
       <BasicModal data={currentItem} open={open} setOpen={setOpen} />
     </>
   );

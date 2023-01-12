@@ -14,11 +14,12 @@ export default function MainPage() {
   const [visibleData, setVisibleData] = useState([]);
   const [open, setOpen] = useState(false);
   let [currentItem, setCurrentItem] = useState(null);
-  const [rowsPerPage, setRowsPerPage] = useState(5);
-  const dispatch = useDispatch();
-  const filterData = useSelector(state => state.filter.value);
-  const [page, setPage] = useState(0);
   const [searchParams, setSearchParams] = useSearchParams();
+  const [rowsPerPage, setRowsPerPage] = useState(parseInt(searchParams.get("per_page")) ?? 5);
+  const dispatch = useDispatch();
+  const filterData =  useSelector(state => state.filter.value);
+  const [page, setPage] = useState(parseInt(searchParams.get("page"))-1 ?? 0);
+  
 
   const updateQueryString = (per_page,page,filter) => {
     const nextPerPageParams = per_page !== "" ? { per_page } : {};
@@ -32,7 +33,7 @@ export default function MainPage() {
     dispatch(filterInfo(event.currentTarget.value));
   };
 
-  const normalizedFilter = Number(filterData);
+  const normalizedFilter = searchParams.get("filter") ?? Number(filterData);
   const handlerModal = event => {
     const currentId = event.currentTarget.firstChild?.textContent;
     if (visibleData) {
@@ -71,6 +72,12 @@ export default function MainPage() {
           />
         )}
       </ErrorBoundary>
+      <button
+        type="button"
+        onClick={() => updateQueryString(rowsPerPage, page + 1, filterData)}
+      >
+        Click
+      </button>
     </DataContainer>
   );
 }
