@@ -8,7 +8,7 @@ export const App = () => {
   return (
     <Suspense fallback={<div>Loading...</div>}>
       <Routes>
-        <Route path="/" element={<MainPage />} />
+        <Route path="CodeblyTest/" element={<MainPage />} />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </Suspense>
