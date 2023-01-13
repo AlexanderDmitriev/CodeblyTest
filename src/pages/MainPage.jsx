@@ -15,15 +15,29 @@ export default function MainPage() {
   const [open, setOpen] = useState(false);
   let [currentItem, setCurrentItem] = useState(null);
   const [searchParams, setSearchParams] = useSearchParams();
-  const [rowsPerPage, setRowsPerPage] = useState(5);
   const dispatch = useDispatch();
   let filterData = useSelector(state => state.filter.value);
-  const [page, setPage] = useState(0);
+
+  ///******PAGE ************/
+  const pageSearchParam = () => {
+    if (searchParams.get('page') !== '' && !isNaN(searchParams.get('page'))) {
+      return parseInt(searchParams.get('page')) - 1;
+    } else return 0;
+  };
+  const [page, setPage] = useState(pageSearchParam()|0);
+  ///*******END PAGE************ */
+  ///******PER_PAGE ************/
+  const perPageSearchParam = () => {
+    if (searchParams.get('per_page') !== '' && !isNaN(searchParams.get('per_page'))) {
+      return parseInt(searchParams.get('per_page'));
+    } else return 5;
+  };
+  const [rowsPerPage, setRowsPerPage] = useState(perPageSearchParam()|5);
+  ///*******END PER_PAGE************ */
 
   const updateQueryString = (per_page, page, filter) => {
     const nextPerPageParams = per_page !== '' ? { per_page } : {};
     const nextPageParams = page !== '' ? { page } : {};
-    console.log(nextPageParams)
     const nextFilterParams = filter !== '' ? { filter } : {};
     const nextParams = {
       ...nextPerPageParams,
@@ -32,27 +46,11 @@ export default function MainPage() {
     };
     setSearchParams(nextParams);
   };
-  
-  /* useEffect(() => {
-    if (searchParams.get('page') !== '') {
-      setPage(parseInt(searchParams.get('page')) - 1);
-      console.log(page);
-    }
-    if (searchParams.get('per_page') !== '') {
-      setRowsPerPage(parseInt(searchParams.get('per_page')));
-    }
-    if (searchParams.get('filter') !== '') {
-      dispatch(filterInfo(searchParams.get('filter')));
-    }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []); */
-  
 
-  useEffect(()=>{
+  useEffect(() => {
     updateQueryString(rowsPerPage, page + 1, filterData);
-    console.log(page);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  },[rowsPerPage, page, filterData, setSearchParams]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [rowsPerPage, page, filterData, setSearchParams]);
 
   /****FILTER****************** */
   const changeFilter = event => {
@@ -78,7 +76,7 @@ export default function MainPage() {
     }
   }, [filterData, info, normalizedFilter]);
 
-//*******************END OF FILTER**************** */
+  //*******************END OF FILTER**************** */
 
   return (
     <DataContainer>
