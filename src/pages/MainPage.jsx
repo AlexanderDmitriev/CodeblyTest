@@ -17,12 +17,13 @@ export default function MainPage() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const dispatch = useDispatch();
-  const filterData = useSelector(state => state.filter.value);
+  let filterData = useSelector(state => state.filter.value);
   const [page, setPage] = useState(0);
 
   const updateQueryString = (per_page, page, filter) => {
     const nextPerPageParams = per_page !== '' ? { per_page } : {};
     const nextPageParams = page !== '' ? { page } : {};
+    console.log(nextPageParams)
     const nextFilterParams = filter !== '' ? { filter } : {};
     const nextParams = {
       ...nextPerPageParams,
@@ -31,29 +32,34 @@ export default function MainPage() {
     };
     setSearchParams(nextParams);
   };
-
-  useEffect(() => {
-    if (searchParams.get('page' !== '')) {
+  
+  /* useEffect(() => {
+    if (searchParams.get('page') !== '') {
       setPage(parseInt(searchParams.get('page')) - 1);
+      console.log(page);
     }
-    if (searchParams.get('per_page' !== '')) {
+    if (searchParams.get('per_page') !== '') {
       setRowsPerPage(parseInt(searchParams.get('per_page')));
     }
-    /* if (searchParams.get('filter' !== '')) {
-      setFilterData(searchParams.get('filter'));
-    } */
-  }, [searchParams]);
+    if (searchParams.get('filter') !== '') {
+      dispatch(filterInfo(searchParams.get('filter')));
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); */
+  
 
   useEffect(()=>{
-    updateQueryString(rowsPerPage, page + 1, filterData)
+    updateQueryString(rowsPerPage, page + 1, filterData);
+    console.log(page);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   },[rowsPerPage, page, filterData, setSearchParams]);
 
+  /****FILTER****************** */
   const changeFilter = event => {
     dispatch(filterInfo(event.currentTarget.value));
   };
 
-  const normalizedFilter = searchParams.get('filter') ?? Number(filterData);
+  const normalizedFilter = Number(filterData);
   const handlerModal = event => {
     const currentId = event.currentTarget.firstChild?.textContent;
     if (visibleData) {
@@ -71,6 +77,8 @@ export default function MainPage() {
       }
     }
   }, [filterData, info, normalizedFilter]);
+
+//*******************END OF FILTER**************** */
 
   return (
     <DataContainer>
@@ -90,12 +98,6 @@ export default function MainPage() {
           />
         )}
       </ErrorBoundary>
-{/*       <button
-        type="button"
-        onClick={() => updateQueryString(rowsPerPage, page + 1, filterData)}
-      >
-        Click
-      </button> */}
     </DataContainer>
   );
 }
